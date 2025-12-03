@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: extinguidor-backend
+  
+  datasource:
+    url: jdbc:mysql://db-mysql-nyc3-92655-do-user-3126449-0.i.db.ondigitalocean.com:25060/extinguidordb?useSSL=true&requireSSL=true
+    username: ${DB_USERNAME:doadmin}
+    password: ${DB_PASSWORD:AVNS_d_er2AQAfY-mcsWUETv}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+          use_get_generated_keys: true
+        order_inserts: true
+        order_updates: true
+  
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+  
+  security:
+    jwt:
+      secret: ${JWT_SECRET:ExtinguidorSecretKeyForJWTTokenGeneration2025}
+      expiration: 86400000 # 24 horas en milisegundos
+
+server:
+  port: 3000
+  servlet:
+    context-path: /
+
+logging:
+  config: classpath:log4j2.xml
+
+app:
+  file:
+    upload-dir: ${UPLOAD_DIR:./uploads}
+    partes-dir: ${UPLOAD_DIR:./uploads}/partes
+    clientes-dir: ${UPLOAD_DIR:./uploads}/clientes
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
