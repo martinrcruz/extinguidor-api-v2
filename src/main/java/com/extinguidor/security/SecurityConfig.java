@@ -86,6 +86,7 @@ public class SecurityConfig {
             "http://localhost:8080",
             "https://extinguidor-app.vercel.app",
             "https://extinguidor-api-v2-zxy9b.ondigitalocean.app",
+            "https://extinguidor-front-v2-ccvj6.ondigitalocean.app",
             "capacitor://localhost",
             "ionic://localhost"
         ));

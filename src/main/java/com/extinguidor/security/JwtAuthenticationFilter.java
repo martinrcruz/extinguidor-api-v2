@@ -30,6 +30,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                    HttpServletResponse response, 
                                    FilterChain filterChain) throws ServletException, IOException {
         
+        // Saltar peticiones OPTIONS (preflight CORS) - estas son manejadas por Spring Security CORS
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         try {
             String jwt = getJwtFromRequest(request);
             
@@ -50,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception ex) {
-            log.error("No se pudo establecer la autenticación del usuario: {}", ex.getMessage());
+            log.error("No se pudo establecer la autenticación del usuario: {}", ex.getMessage(), ex);
         }
         
         filterChain.doFilter(request, response);
