@@ -1,6 +1,5 @@
 package com.extinguidor.model.entity;
 
-import com.extinguidor.model.enums.MaterialCategory;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,13 +7,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "materials", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "name"),
-    @UniqueConstraint(columnNames = "code")
+@Table(name = "zipcodes", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "codezip")
 })
 @Getter
 @Setter
@@ -23,32 +20,17 @@ import java.time.LocalDateTime;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Material {
+public class Zipcode {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(nullable = false, unique = true)
+    private String codezip;
+    
+    @Column(name = "name")
     private String name;
-    
-    @Column(nullable = false, unique = true)
-    private String code;
-    
-    @Column(columnDefinition = "TEXT")
-    private String description;
-    
-    private String type;
-    
-    @Column(name = "fecha_ultimo_mantenimiento")
-    private LocalDate fechaUltimoMantenimiento;
-    
-    @Column(name = "color")
-    private String color;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "categoria")
-    private MaterialCategory categoria;
     
     @CreatedDate
     @Column(name = "created_date", updatable = false)

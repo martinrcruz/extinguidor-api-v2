@@ -21,6 +21,9 @@ public interface MaterialMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updatedDate", ignore = true)
+    @Mapping(target = "fechaUltimoMantenimiento", source = "fechaUltimoMantenimiento")
+    @Mapping(target = "color", source = "color")
+    @Mapping(target = "categoria", source = "categoria")
     void updateEntity(@MappingTarget Material material, MaterialRequest request);
 }
 

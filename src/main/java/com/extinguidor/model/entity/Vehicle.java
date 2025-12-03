@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,6 +44,15 @@ public class Vehicle {
     
     @Column(name = "photo", columnDefinition = "TEXT")
     private String photo = "auto.jpg";
+    
+    @Column(name = "kilometraje")
+    private Integer kilometraje;
+    
+    @Column(name = "fecha_adquisicion")
+    private LocalDate fechaAdquisicion;
+    
+    @Column(name = "fecha_ultimo_mantenimiento")
+    private LocalDate fechaUltimoMantenimiento;
     
     @CreatedDate
     @Column(name = "created_date", updatable = false)

@@ -95,8 +95,15 @@ public class MaterialService {
         if (materialRepository.existsByCode(request.getCode())) {
             throw new BusinessException("El código de material ya está en uso");
         }
+        log.debug("Creando material con request: name={}, code={}, fechaUltimoMantenimiento={}, color={}, categoria={}", 
+                  request.getName(), request.getCode(), request.getFechaUltimoMantenimiento(), 
+                  request.getColor(), request.getCategoria());
         Material material = materialMapper.toEntity(request);
+        log.debug("Material mapeado: fechaUltimoMantenimiento={}, color={}, categoria={}", 
+                  material.getFechaUltimoMantenimiento(), material.getColor(), material.getCategoria());
         Material saved = materialRepository.save(material);
+        log.debug("Material guardado: fechaUltimoMantenimiento={}, color={}, categoria={}", 
+                  saved.getFechaUltimoMantenimiento(), saved.getColor(), saved.getCategoria());
         return materialMapper.toResponse(saved);
     }
     
@@ -113,8 +120,24 @@ public class MaterialService {
             throw new BusinessException("El código ya está en uso");
         }
         
+        log.debug("Actualizando material ID={} con request: fechaUltimoMantenimiento={}, color={}, categoria={}", 
+                  id, request.getFechaUltimoMantenimiento(), request.getColor(), request.getCategoria());
+        log.debug("Material antes de actualizar: fechaUltimoMantenimiento={}, color={}, categoria={}", 
+                  material.getFechaUltimoMantenimiento(), material.getColor(), material.getCategoria());
+        
         materialMapper.updateEntity(material, request);
+        
+        // Asegurar que los campos se actualicen manualmente si el mapper no los mapea correctamente
+        material.setFechaUltimoMantenimiento(request.getFechaUltimoMantenimiento());
+        material.setColor(request.getColor());
+        material.setCategoria(request.getCategoria());
+        
+        log.debug("Material después de mapeo: fechaUltimoMantenimiento={}, color={}, categoria={}", 
+                  material.getFechaUltimoMantenimiento(), material.getColor(), material.getCategoria());
+        
         Material saved = materialRepository.save(material);
+        log.debug("Material guardado: fechaUltimoMantenimiento={}, color={}, categoria={}", 
+                  saved.getFechaUltimoMantenimiento(), saved.getColor(), saved.getCategoria());
         return materialMapper.toResponse(saved);
     }
 }

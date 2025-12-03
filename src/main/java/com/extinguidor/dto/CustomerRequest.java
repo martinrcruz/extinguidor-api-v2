@@ -3,6 +3,8 @@ package com.extinguidor.dto;
 import com.extinguidor.model.enums.ContractType;
 import com.extinguidor.model.enums.Rate;
 import com.extinguidor.model.enums.RevisionFrequency;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -44,7 +46,11 @@ public class CustomerRequest {
     
     private Boolean active;
     
+    @JsonProperty("zoneId")
     private Long zoneId;
+    
+    @JsonProperty("zone")
+    private Object zone; // Acepta tanto String como Long para compatibilidad con frontend
     
     private String description;
     
@@ -68,7 +74,8 @@ public class CustomerRequest {
     
     private Rate rate;
     
-    private Integer mi;
+    @JsonAlias({"MI"})
+    private Integer mi; // Acepta tanto "mi" como "MI" para compatibilidad con frontend
     
     private String tipo;
     

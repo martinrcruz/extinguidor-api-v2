@@ -1,27 +1,20 @@
 package com.extinguidor.dto;
 
-import com.extinguidor.model.enums.MaterialCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MaterialResponse {
+public class ZipcodeResponse {
     private Long id;
+    private String codezip;
     private String name;
-    private String code;
-    private String description;
-    private String type;
-    private LocalDate fechaUltimoMantenimiento;
-    private String color;
-    private MaterialCategory categoria;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }

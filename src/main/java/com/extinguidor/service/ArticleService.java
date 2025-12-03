@@ -44,6 +44,10 @@ public class ArticleService {
             article.setPrecioVenta(0.0);
         }
         
+        if (article.getEliminado() == null) {
+            article.setEliminado(false);
+        }
+        
         return articleRepository.save(article);
     }
     
@@ -62,6 +66,10 @@ public class ArticleService {
         article.setFamilia(articleDetails.getFamilia());
         article.setDescripcionArticulo(articleDetails.getDescripcionArticulo());
         article.setPrecioVenta(articleDetails.getPrecioVenta());
+        
+        if (article.getEliminado() == null) {
+            article.setEliminado(false);
+        }
         
         return articleRepository.save(article);
     }
@@ -100,6 +108,10 @@ public class ArticleService {
             article.setPrecioVenta(0.0);
         }
         
+        if (article.getEliminado() == null) {
+            article.setEliminado(false);
+        }
+        
         Article saved = articleRepository.save(article);
         return articleMapper.toResponse(saved);
     }
@@ -114,6 +126,11 @@ public class ArticleService {
         }
         
         articleMapper.updateEntity(article, request);
+        
+        if (article.getEliminado() == null) {
+            article.setEliminado(false);
+        }
+        
         Article saved = articleRepository.save(article);
         return articleMapper.toResponse(saved);
     }

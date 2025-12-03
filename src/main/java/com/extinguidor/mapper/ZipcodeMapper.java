@@ -1,29 +1,26 @@
 package com.extinguidor.mapper;
 
-import com.extinguidor.dto.VehicleRequest;
-import com.extinguidor.dto.VehicleResponse;
-import com.extinguidor.model.entity.Vehicle;
+import com.extinguidor.dto.ZipcodeRequest;
+import com.extinguidor.dto.ZipcodeResponse;
+import com.extinguidor.model.entity.Zipcode;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface VehicleMapper {
+public interface ZipcodeMapper {
     
-    VehicleResponse toResponse(Vehicle vehicle);
-    
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdDate", ignore = true)
-    @Mapping(target = "updatedDate", ignore = true)
-    Vehicle toEntity(VehicleRequest request);
+    ZipcodeResponse toResponse(Zipcode zipcode);
     
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updatedDate", ignore = true)
-    @Mapping(target = "kilometraje", source = "kilometraje")
-    @Mapping(target = "fechaAdquisicion", source = "fechaAdquisicion")
-    @Mapping(target = "fechaUltimoMantenimiento", source = "fechaUltimoMantenimiento")
-    void updateEntity(@MappingTarget Vehicle vehicle, VehicleRequest request);
+    Zipcode toEntity(ZipcodeRequest request);
+    
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updatedDate", ignore = true)
+    void updateEntity(@MappingTarget Zipcode zipcode, ZipcodeRequest request);
 }
 

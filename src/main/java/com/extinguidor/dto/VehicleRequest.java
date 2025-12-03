@@ -2,10 +2,13 @@ package com.extinguidor.dto;
 
 import com.extinguidor.model.enums.VehicleFuel;
 import com.extinguidor.model.enums.VehicleType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +29,13 @@ public class VehicleRequest {
     private VehicleType type;
     
     private String photo;
+    
+    private Integer kilometraje;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaAdquisicion;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaUltimoMantenimiento;
 }
 

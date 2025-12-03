@@ -52,6 +52,9 @@ public class CustomerService {
         if (customerRepository.existsByEmail(customer.getEmail())) {
             throw new BusinessException("El email ya está en uso");
         }
+        if (customer.getActive() == null) {
+            customer.setActive(true);
+        }
         return customerRepository.save(customer);
     }
     
@@ -130,10 +133,30 @@ public class CustomerService {
         
         Customer customer = customerMapper.toEntity(request);
         
-        // Mapear zone si existe
-        if (request.getZoneId() != null) {
-            customer.setZone(zoneRepository.findById(request.getZoneId())
-                .orElseThrow(() -> new ResourceNotFoundException("Zona", request.getZoneId())));
+        // Mapear zone si existe (soporta tanto zoneId como zone)
+        Long zoneIdToUse = request.getZoneId();
+        if (zoneIdToUse == null && request.getZone() != null) {
+            // Convertir zone (puede ser String o Long) a Long
+            if (request.getZone() instanceof String) {
+                try {
+                    zoneIdToUse = Long.parseLong((String) request.getZone());
+                } catch (NumberFormatException e) {
+                    throw new BusinessException("El ID de zona debe ser un número válido");
+                }
+            } else if (request.getZone() instanceof Number) {
+                zoneIdToUse = ((Number) request.getZone()).longValue();
+            }
+        }
+        
+        if (zoneIdToUse != null) {
+            Long finalZoneIdToUse = zoneIdToUse;
+            customer.setZone(zoneRepository.findById(zoneIdToUse)
+                .orElseThrow(() -> new ResourceNotFoundException("Zona", finalZoneIdToUse)));
+        }
+        
+        // Asegurar que mi se asigne correctamente (ya mapeado por Jackson con @JsonAlias)
+        if (request.getMi() != null) {
+            customer.setMi(request.getMi());
         }
         
         // Mapear contract systems
@@ -159,6 +182,10 @@ public class CustomerService {
             customer.setDocuments(documents);
         }
         
+        if (customer.getActive() == null) {
+            customer.setActive(true);
+        }
+        
         Customer saved = customerRepository.save(customer);
         return customerMapper.toResponse(saved);
     }
@@ -174,12 +201,32 @@ public class CustomerService {
         
         customerMapper.updateEntity(customer, request);
         
-        // Mapear zone si existe
-        if (request.getZoneId() != null) {
-            customer.setZone(zoneRepository.findById(request.getZoneId())
-                .orElseThrow(() -> new ResourceNotFoundException("Zona", request.getZoneId())));
+        // Mapear zone si existe (soporta tanto zoneId como zone)
+        Long zoneIdToUse = request.getZoneId();
+        if (zoneIdToUse == null && request.getZone() != null) {
+            // Convertir zone (puede ser String o Long) a Long
+            if (request.getZone() instanceof String) {
+                try {
+                    zoneIdToUse = Long.parseLong((String) request.getZone());
+                } catch (NumberFormatException e) {
+                    throw new BusinessException("El ID de zona debe ser un número válido");
+                }
+            } else if (request.getZone() instanceof Number) {
+                zoneIdToUse = ((Number) request.getZone()).longValue();
+            }
+        }
+        
+        if (zoneIdToUse != null) {
+            Long finalZoneIdToUse = zoneIdToUse;
+            customer.setZone(zoneRepository.findById(zoneIdToUse)
+                .orElseThrow(() -> new ResourceNotFoundException("Zona", finalZoneIdToUse)));
         } else {
             customer.setZone(null);
+        }
+        
+        // Asegurar que mi se asigne correctamente (ya mapeado por Jackson con @JsonAlias)
+        if (request.getMi() != null) {
+            customer.setMi(request.getMi());
         }
         
         // Actualizar contract systems
@@ -209,6 +256,10 @@ public class CustomerService {
                     .collect(Collectors.toList());
                 customer.getDocuments().addAll(documents);
             }
+        }
+        
+        if (customer.getActive() == null) {
+            customer.setActive(true);
         }
         
         Customer saved = customerRepository.save(customer);

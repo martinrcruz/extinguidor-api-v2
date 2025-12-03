@@ -63,6 +63,9 @@ public class UserService {
         }
         
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getActivo() == null) {
+            user.setActivo(true);
+        }
         return userRepository.save(user);
     }
     
@@ -140,6 +143,9 @@ public class UserService {
         if (request.getPassword() != null && !request.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
+        if (user.getActivo() == null) {
+            user.setActivo(true);
+        }
         
         User saved = userRepository.save(user);
         return userMapper.toResponse(saved);
@@ -158,6 +164,9 @@ public class UserService {
         
         if (request.getPassword() != null && !request.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+        if (user.getActivo() == null) {
+            user.setActivo(true);
         }
         
         User saved = userRepository.save(user);

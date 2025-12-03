@@ -116,6 +116,10 @@ public class ParteService {
         
         parte.setDate(normalizedDate);
         
+        if (parte.getEliminado() == null) {
+            parte.setEliminado(false);
+        }
+        
         // Si es periódico, validar y generar partes
         if (Boolean.TRUE.equals(parte.getPeriodico())) {
             validatePeriodicParte(parte);
@@ -265,6 +269,7 @@ public class ParteService {
         copy.setGestiona(original.getGestiona());
         copy.setFacturacion(original.getFacturacion());
         copy.setArticulos(new ArrayList<>(original.getArticulos()));
+        copy.setEliminado(false);
         return copy;
     }
     
@@ -551,6 +556,10 @@ public class ParteService {
         // Si cambió a Finalizado, guardar fecha
         if (request.getState() == ParteState.Finalizado && parte.getFinalizadoTime() == null) {
             parte.setFinalizadoTime(LocalDateTime.now());
+        }
+        
+        if (parte.getEliminado() == null) {
+            parte.setEliminado(false);
         }
         
         Parte saved = parteRepository.save(parte);

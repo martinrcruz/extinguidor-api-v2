@@ -86,6 +86,10 @@ public class RouteService {
             route.setDate(DateUtil.normalizeToNoon(route.getDate()));
         }
         
+        if (route.getEliminado() == null) {
+            route.setEliminado(false);
+        }
+        
         return routeRepository.save(route);
     }
     
@@ -112,6 +116,10 @@ public class RouteService {
         route.setUsers(routeDetails.getUsers());
         route.setComentarios(routeDetails.getComentarios());
         route.setHerramientas(routeDetails.getHerramientas());
+        
+        if (route.getEliminado() == null) {
+            route.setEliminado(false);
+        }
         
         return routeRepository.save(route);
     }
@@ -229,6 +237,10 @@ public class RouteService {
             route.setDate(DateUtil.normalizeToNoon(route.getDate()));
         }
         
+        if (route.getEliminado() == null) {
+            route.setEliminado(false);
+        }
+        
         Route saved = routeRepository.save(route);
         return routeMapper.toResponse(saved);
     }
@@ -285,6 +297,10 @@ public class RouteService {
         
         if (request.getDate() != null) {
             route.setDate(DateUtil.normalizeToNoon(request.getDate()));
+        }
+        
+        if (route.getEliminado() == null) {
+            route.setEliminado(false);
         }
         
         Route saved = routeRepository.save(route);

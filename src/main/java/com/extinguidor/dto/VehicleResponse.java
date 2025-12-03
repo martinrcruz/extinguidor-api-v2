@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,6 +22,9 @@ public class VehicleResponse {
     private VehicleFuel fuel;
     private VehicleType type;
     private String photo;
+    private Integer kilometraje;
+    private LocalDate fechaAdquisicion;
+    private LocalDate fechaUltimoMantenimiento;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }
