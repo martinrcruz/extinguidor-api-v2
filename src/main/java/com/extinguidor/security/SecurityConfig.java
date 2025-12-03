@@ -81,10 +81,11 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
             "http://localhost:4200",
-            "http://localhost:8100",
+                "http://localhost:8100",
+                "http://localhost:8101",
             "http://localhost:8080",
             "https://extinguidor-app.vercel.app",
-            "https://extinguidor-backend-tj94j.ondigitalocean.app",
+            "https://extinguidor-api-v2-zxy9b.ondigitalocean.app",
             "capacitor://localhost",
             "ionic://localhost"
         ));
