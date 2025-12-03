@@ -1,0 +1,43 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Logs
+logs/
+*.log
+*.log.gz
+
+# Uploads (no incluir en imagen, usar volumen)
+uploads/
+
+# Git
+.git/
+.gitignore
+
+# Documentación
+*.md
+!README.md
+
+# Scripts de desarrollo
+*.sh
+add_*.py
+
+# Postman
+*.postman_collection.json
+
+# SQL scripts (ya están en resources)
+*.sql
+!src/main/resources/*.sql
+
+# OS
+.DS_Store
+Thumbs.db
+
