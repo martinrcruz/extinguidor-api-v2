@@ -222,15 +222,15 @@ public class ParteService {
         }
         
         // Validar solapamiento
-        List<Parte> overlapping = parteRepository.findOverlappingPartes(
-            parte.getCustomer().getId(),
-            parte.getDate(),
-            parte.getEndDate()
-        );
-        
-        if (!overlapping.isEmpty()) {
-            throw new BusinessException("No se pueden crear partes periódicos que se solapen con partes existentes");
-        }
+//        List<Parte> overlapping = parteRepository.findOverlappingPartes(
+//            parte.getCustomer().getId(),
+//            parte.getDate(),
+//            parte.getEndDate()
+//        );
+//
+//        if (!overlapping.isEmpty()) {
+//            throw new BusinessException("No se pueden crear partes periódicos que se solapen con partes existentes");
+//        }
     }
     
     private Parte createPeriodicPartes(Parte baseParte) {
@@ -248,7 +248,29 @@ public class ParteService {
             newParte.setEndDate(null);
             newParte.setFrequency(null);
             
-            createdPartes.add(parteRepository.save(newParte));
+            // Guardar el parte primero para obtener su ID
+            Parte savedParte = parteRepository.save(newParte);
+            
+            // Ahora crear nuevos ParteArticulo con referencia al parte ya guardado
+            if (baseParte.getArticulos() != null && !baseParte.getArticulos().isEmpty()) {
+                List<ParteArticulo> nuevosArticulos = new ArrayList<>();
+                for (ParteArticulo articuloOriginal : baseParte.getArticulos()) {
+                    ParteArticulo nuevoArticulo = new ParteArticulo();
+                    nuevoArticulo.setParte(savedParte);
+                    nuevoArticulo.setCantidad(articuloOriginal.getCantidad());
+                    nuevoArticulo.setCodigo(articuloOriginal.getCodigo());
+                    nuevoArticulo.setGrupo(articuloOriginal.getGrupo());
+                    nuevoArticulo.setFamilia(articuloOriginal.getFamilia());
+                    nuevoArticulo.setDescripcionArticulo(articuloOriginal.getDescripcionArticulo());
+                    nuevoArticulo.setPrecioVenta(articuloOriginal.getPrecioVenta());
+                    nuevosArticulos.add(nuevoArticulo);
+                }
+                savedParte.setArticulos(nuevosArticulos);
+                // Guardar nuevamente para persistir los artículos
+                savedParte = parteRepository.save(savedParte);
+            }
+            
+            createdPartes.add(savedParte);
             
             currentDate = currentDate.plusMonths(monthsToAdd);
         }
@@ -268,7 +290,10 @@ public class ParteService {
         copy.setCoordinationMethod(original.getCoordinationMethod());
         copy.setGestiona(original.getGestiona());
         copy.setFacturacion(original.getFacturacion());
-        copy.setArticulos(new ArrayList<>(original.getArticulos()));
+        copy.setRuta(original.getRuta());
+        copy.setWorker(original.getWorker());
+        // No copiar artículos directamente - se crearán nuevos después de guardar el parte
+        copy.setArticulos(new ArrayList<>());
         copy.setEliminado(false);
         return copy;
     }
